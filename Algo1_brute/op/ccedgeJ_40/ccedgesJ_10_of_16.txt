@@ -1,5 +1,0 @@
-Contains those cutsetno whose eig val greater than J = 40.0000
-sno.	Cutsetno	cutedges 	 eigval1 	 eigval2
-0	 18882560		 115 	       46.06	        41.76
-1	 19922944		 114 	       42.94	        44.00
-2	 19931136		 107 	       42.65	        59.76
