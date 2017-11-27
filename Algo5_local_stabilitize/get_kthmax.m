@@ -15,10 +15,10 @@ function id = get_kthmax(w,c,k)
         return ;    
     else
         ss = w .* c;
-        [~,ii] = sort(ss);
-        offset = sum(c == 0);
+        [~,ii] = sort(ss,'descend');
+        %offset = sum(c == 0);
+        offset = 0;
         id = ii(offset+k);
-
     end
 
 %end

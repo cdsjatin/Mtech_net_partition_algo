@@ -63,7 +63,7 @@ clear C;
 adj = create_adj(s,t,w,num_nodes);
 lap = create_lap(adj);
 J = max(get_2eig(lap))/d_factor
-max_iter = 50
+max_iter = 12
 
 degree_w = get_degreeWeight(adj);
 jj = 0;
@@ -135,7 +135,7 @@ for i = 1: max_iter
                 
                 %idx_a = -1
                 
-                c(idx_a) = 0;
+                %c(idx_a) = 0;
                 c(idx_b) = 1;
                 
                 display(sprintf('Swapping %d with %d ',idx_a,idx_b));
