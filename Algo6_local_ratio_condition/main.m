@@ -143,9 +143,10 @@ for i = 1: max_iter
                 
                 display(sprintf('Swapping %d with %d ',idx_a,idx_b));
                 
-                c(idx_a) = 0;
-                c(idx_b) = 1;
-              
+               if(idx_a ~= -1 && idx_b ~= -1)
+                c(idx_a) = 1-c(idx_a);
+                c(idx_b) = 1-c(idx_b);
+               end
                 
                 
             else
@@ -158,9 +159,11 @@ for i = 1: max_iter
                                     c,1,omit_vset);
                 
                 display(sprintf('Swapping %d with %d ',idx_b,idx_a));
-                c(idx_a) = 1;
-                c(idx_b) = 0;
                 
+               if(idx_a ~= -1 && idx_b ~= -1)
+                c(idx_a) = 1-c(idx_a);
+                c(idx_b) = 1-c(idx_b);
+               end
                 
             end
             
