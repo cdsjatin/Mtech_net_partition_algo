@@ -11,7 +11,7 @@ function [id,omit_vset] = min_in_component2(e_cost,i_cost,c,gnum,omit_vset)
     omit_vset_new = zeros(size(omit_vset,1),1);
     % mera group number is always meant to be 1
     c_new(c==gnum) = 1;
-    omit_vset_new(omit_vset==0) = 1;
+    omit_vset_new = 1 - omit_vset;
     
     w = min(e_cost ./ i_cost,1);
     

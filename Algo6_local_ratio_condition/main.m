@@ -1,4 +1,4 @@
-%   Main Local Stabilizing Method
+%   Main Local Ratio stability method
 % 
 % Input Edgelist undirected (no edge repeat), will work if repeat too
 % first row is header
@@ -63,7 +63,7 @@ clear C;
 adj = create_adj(s,t,w,num_nodes);
 lap = create_lap(adj);
 J = max(get_2eig(lap))/d_factor
-max_iter = 50
+max_iter = 12
 
 degree_w = get_degreeWeight(adj);
 jj = 0;
@@ -92,7 +92,7 @@ for i = 1: max_iter
     eig0     = get_2eig(lap0);
     eig1     = get_2eig(lap1);
     
-    [e_cost,i_cost] = get_Cost(s,t,w,c,num_nodes); % compute cost wrt each node
+    [e_cost,i_cost] = get_Cost(s,t,w,c,num_nodes,omit_vset); % compute cost wrt each node
     
     if i == 1
        eig0
@@ -112,13 +112,13 @@ for i = 1: max_iter
         subplot(1,2,1)
         G = graph(adj0);
         plot(G,'b','Layout','subspace','EdgeLabel',G.Edges.Weight);
-        X = sprintf('%0.2f,Edges=%d',eig0,cnt0-1);
+        X = sprintf('%0.2f,Edges=%d',eig0,size(adj0,1));
         title(X);
         
         subplot(1,2,2)
         G = graph(adj1);
         plot(G,'r','Layout','subspace','EdgeLabel',G.Edges.Weight);
-        X = sprintf('%0.2f,Edges=%d',eig1,cnt1-1);
+        X = sprintf('%0.2f,Edges=%d',eig1,size(adj1,1));
         title(X);
         
         jj = 11;
@@ -127,38 +127,40 @@ for i = 1: max_iter
         
     end
  
-    
     if(eig0 < J || eig1 < J)
             
+        
             if(eig0 > eig1)
-               % give bahut kum and take bahut jaada
+              
+               % give very less and take a lot more
                 [idx_a,omit_vset] = min_in_component2(e_cost,i_cost,...
-                                    degree_w,c,1,omit_vset);
+                                    c,1,omit_vset);
                                 
                 [idx_b,omit_vset] = max_in_component2(e_cost,i_cost,...
-                                    degree_w,c,1,omit_vset);
+                                    c,0,omit_vset);
                 
                 %idx_a = -1
                 
+                display(sprintf('Swapping %d with %d ',idx_a,idx_b));
+                
                 c(idx_a) = 0;
                 c(idx_b) = 1;
+              
                 
-                display(sprintf('Swapping %d with %d ',idx_a,idx_b));
                 
             else
                 
                 
-                [idx_a,omit_vset] = min_in_component2(degree_w,c,...
-                                        0,omit_vset,e_cost,i_cost);
+                [idx_a,omit_vset] = min_in_component2(e_cost,i_cost,...
+                                    c,0,omit_vset);
                                     
                 [idx_b,omit_vset] = max_in_component2(e_cost,i_cost,...
-                                    degree_w,c,1,omit_vset);
+                                    c,1,omit_vset);
                 
+                display(sprintf('Swapping %d with %d ',idx_b,idx_a));
                 c(idx_a) = 1;
                 c(idx_b) = 0;
                 
-                
-                display(sprintf('Swapping %d with %d ',idx_b,idx_a));
                 
             end
             
@@ -173,12 +175,12 @@ for i = 1: max_iter
    
     subplot(1,2,1)
     plot(eigA);
-    X = sprintf('%0.2f,CutEdges=%d',eig0,cnt0-1);
+    X = sprintf('%0.2f,nodes=%d',eig0,size(adj0,1));
     title(X);
     
     subplot(1,2,2)
     plot(eigB);
-    X = sprintf('%0.2f,CutEdges=%d',eig1,cnt1-1);
+    X = sprintf('%0.2f,nodes=%d',eig1,size(adj1,1));
     title(X);
     
     %pause(0.5)
