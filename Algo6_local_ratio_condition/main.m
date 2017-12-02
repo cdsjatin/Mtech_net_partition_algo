@@ -49,11 +49,11 @@ J = str2double(x{3});
 %}
 idx_a = -1
 
-num_nodes = 6;
-d_factor = 1;
-max_iter = 3
+num_nodes = 25;
+d_factor = 2;
+max_iter = 12
 
-fid = fopen('./data/edge6.csv');
+fid = fopen('./data/edgeG.csv');
 C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 s = C{1};
 t = C{3};
@@ -68,14 +68,16 @@ J = max(get_2eig(lap))/d_factor
 
 degree_w = get_degreeWeight(adj);
 jj = 0;
-
-while(jj < 10)
+JJ = 100
+while(jj < JJ)
     
-%[c,c_no] = random_cutset(num_nodes);
-c = [1;1;1;0;0;0]
+[c,c_no] = random_cutset(num_nodes);
+%c = [1;1;1;0;0;0]
 jj = jj + 1 ;
 omit_vset = zeros(num_nodes,1);
 clear eigA eigB
+eigA = 0;
+eigB = 0;
 figure(1);
 
 for i = 1: max_iter
@@ -94,18 +96,12 @@ for i = 1: max_iter
     eig0     = get_2eig(lap0);
     eig1     = get_2eig(lap1);
     
-    [e_cost,i_cost] = get_Cost(s,t,w,c,num_nodes,omit_vset) % compute cost wrt each node
+    [e_cost,i_cost] = get_Cost(s,t,w,c,num_nodes,omit_vset); % compute cost wrt each node
     
-    if i == 1
-       eig0
-       eig1
-        
+    if(eig0 < J && eig1 < J)
+        jj
+        break;
     end
-    
-    %if(eig0 < J && eig1 < J)
-    %    jj
-     %   break;
-    %end
     
     % If both eigen values are greater than cut off
     if(eig0 > J && eig1 > J)
@@ -123,7 +119,10 @@ for i = 1: max_iter
         X = sprintf('%0.2f,Edges=%d',eig1,size(adj1,1));
         title(X);
         
-        jj = 11;
+        jj = JJ + 1;
+        
+        
+        
         break;
         
         
@@ -144,7 +143,7 @@ for i = 1: max_iter
                 %idx_a = -1
                 
                 display(sprintf('Swapping %d with %d ',idx_a-1,idx_b-1));
-
+                
                 
             else
                 
@@ -168,12 +167,11 @@ for i = 1: max_iter
                    break;
                end
                 
-            
+        c'    ;
         c_no = de2bi(c');
             
     end
     
-    i
     eigA(i) = eig0;
     eigB(i) = eig1;
     
@@ -199,8 +197,8 @@ for i = 1: max_iter
     
 end
 
-    max(eigA)
-    max(eigB)
+    max(eigA);
+    max(eigB);
 
     
 end
