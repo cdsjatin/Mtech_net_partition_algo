@@ -11,16 +11,16 @@ e_cost = zeros(num_nodes,1);
 i_cost = zeros(num_nodes,1);
 
 for i = 1:n
-   if(omit_vset(s(i)+1) ~= 1 || omit_vset(t(i)+1) ~= 1)
+   if(omit_vset(s(i)+1) ~= 1 && omit_vset(t(i)+1) ~= 1)
     
        if(c(s(i)+1) ~= c(t(i)+1) )
-           i
+           i;
            e_cost(s(i)+1) =  e_cost(s(i)+1) + w(i);
            e_cost(t(i)+1) =  e_cost(t(i)+1) + w(i);
        else
            i_cost(s(i)+1) =  i_cost(s(i)+1) + w(i);
            i_cost(t(i)+1) =  i_cost(t(i)+1) + w(i);
-    end
+        end
     
    end
 end

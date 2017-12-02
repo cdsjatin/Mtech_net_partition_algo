@@ -20,25 +20,17 @@ function [id,omit_vset] = max_in_component2(e_cost,i_cost,c,gnum,omit_vset)
     
     %ss = w .* c_new .* omit_vset_new;
     
-    jj = [1:size(c,1)]'
-    jj = jj .* omit_vset_new
+    jj = 1:size(c,1);
+    jj = jj .* omit_vset_new;
     jj = jj .* c_new;
     
-       id = -1;
-       maxw = -99999;
-    for i = 1:size(c,1)
-        if(jj(i) ~= 0)
-            if(w(jj(i)) > maxw)
-                id = jj(i);
-                maxw = w(jj(i));
-            end
-        end
-    end
     
-    %[~,ii] = sort(ss,'descend')
-    %offset = 0;
-    %id = ii(offset+1);
     
-    %omit_vset(id) = 1;
+    [~,ii] = sort(ss,'descend')
+    %offset = sum(ss == 0);
+    offset = 0;
+    id = ii(offset+1);
+    
+    omit_vset(id) = 1;
 
 end
