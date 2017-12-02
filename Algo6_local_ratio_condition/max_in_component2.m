@@ -16,10 +16,10 @@ function [id,omit_vset] = max_in_component2(e_cost,i_cost,c,gnum,omit_vset)
     omit_vset_new = 1-omit_vset;
     
     %w = max(e_cost ./ i_cost,1);
-    w = e_cost >= i_cost;
+    w = e_cost-i_cost
     
     ss = w .* c_new .* omit_vset_new;
-    [~,ii] = sort(ss,'descend');
+    [~,ii] = sort(ss,'descend')
     %offset = sum(ss == 0);
     offset = 0;
     id = ii(offset+1);

@@ -49,10 +49,11 @@ J = str2double(x{3});
 %}
 idx_a = -1
 
-num_nodes = 25;
-d_factor = 2;
+num_nodes = 6;
+d_factor = 1;
+max_iter = 3
 
-fid = fopen('./data/edgeG.csv');
+fid = fopen('./data/edge6.csv');
 C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 s = C{1};
 t = C{3};
@@ -63,14 +64,15 @@ clear C;
 adj = create_adj(s,t,w,num_nodes);
 lap = create_lap(adj);
 J = max(get_2eig(lap))/d_factor
-max_iter = 12
+
 
 degree_w = get_degreeWeight(adj);
 jj = 0;
 
 while(jj < 10)
     
-[c,c_no] = random_cutset(num_nodes);
+%[c,c_no] = random_cutset(num_nodes);
+c = [1;1;1;0;0;0]
 jj = jj + 1 ;
 omit_vset = zeros(num_nodes,1);
 clear eigA eigB
@@ -92,7 +94,7 @@ for i = 1: max_iter
     eig0     = get_2eig(lap0);
     eig1     = get_2eig(lap1);
     
-    [e_cost,i_cost] = get_Cost(s,t,w,c,num_nodes,omit_vset); % compute cost wrt each node
+    [e_cost,i_cost] = get_Cost(s,t,w,c,num_nodes,omit_vset) % compute cost wrt each node
     
     if i == 1
        eig0
@@ -141,7 +143,7 @@ for i = 1: max_iter
                 
                 %idx_a = -1
                 
-                display(sprintf('Swapping %d with %d ',idx_a,idx_b));
+                display(sprintf('Swapping %d with %d ',idx_a-1,idx_b-1));
 
                 
             else
@@ -153,7 +155,7 @@ for i = 1: max_iter
                 [idx_b,omit_vset] = max_in_component2(e_cost,i_cost,...
                                     c,1,omit_vset);
                 
-                display(sprintf('Swapping %d with %d ',idx_b,idx_a));
+                display(sprintf('Swapping %d with %d ',idx_b-1,idx_a-1));
                 
                    
                 

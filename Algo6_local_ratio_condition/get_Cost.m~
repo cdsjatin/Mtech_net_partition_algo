@@ -14,16 +14,18 @@ for i = 1:n
    if(omit_vset(s(i)+1) ~= 1 || omit_vset(t(i)+1) ~= 1)
     
        if(c(s(i)+1) ~= c(t(i)+1) )
-           i
-           e_cost(s(i)+1) =  e_cost(s(i)+1) + w(i);
-           e_cost(t(i)+1) =  e_cost(t(i)+1) + w(i);
+           e_cost(s(i)+1) =  e_cost(s(i)+1) + w(s(i)+1);
+           e_cost(t(i)+1) =  e_cost(t(i)+1) + w(t(i)+1);
        else
-           i_cost(s(i)+1) =  i_cost(s(i)+1) + w(i);
-           i_cost(t(i)+1) =  i_cost(t(i)+1) + w(i);
+           i_cost(s(i)+1) =  i_cost(s(i)+1) + w(s(i)+1);
+           i_cost(t(i)+1) =  i_cost(t(i)+1) + w(t(i)+1);
     end
     
    end
 end
+
+    e_cost = e_cost ;
+    i_cost = i_cost ;
 
 
 end
