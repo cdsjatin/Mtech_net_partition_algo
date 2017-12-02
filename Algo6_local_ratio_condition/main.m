@@ -133,7 +133,7 @@ for i = 1: max_iter
             if(eig0 > eig1)
               
                % give very less and take a lot more
-                [idx_a,omit_vset] = min_in_component2(e_cost,i_cost,...
+                [idx_a,omit_vset] = max_in_component2(e_cost,i_cost,...
                                     c,1,omit_vset);
                                 
                 [idx_b,omit_vset] = max_in_component2(e_cost,i_cost,...
@@ -142,17 +142,12 @@ for i = 1: max_iter
                 %idx_a = -1
                 
                 display(sprintf('Swapping %d with %d ',idx_a,idx_b));
-                
-               if(idx_a ~= -1 && idx_b ~= -1)
-                c(idx_a) = 1-c(idx_a);
-                c(idx_b) = 1-c(idx_b);
-               end
-                
+
                 
             else
                 
                 
-                [idx_a,omit_vset] = min_in_component2(e_cost,i_cost,...
+                [idx_a,omit_vset] = max_in_component2(e_cost,i_cost,...
                                     c,0,omit_vset);
                                     
                 [idx_b,omit_vset] = max_in_component2(e_cost,i_cost,...
@@ -160,12 +155,17 @@ for i = 1: max_iter
                 
                 display(sprintf('Swapping %d with %d ',idx_b,idx_a));
                 
+                   
+                
+            end
+                                 
                if(idx_a ~= -1 && idx_b ~= -1)
                 c(idx_a) = 1-c(idx_a);
                 c(idx_b) = 1-c(idx_b);
+               else
+                   break;
                end
                 
-            end
             
         c_no = de2bi(c');
             
