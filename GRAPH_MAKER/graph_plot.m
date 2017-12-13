@@ -4,23 +4,22 @@
 function graph_plot(i)
 
 num_nodes = 25;
-fid = fopen('data/edgeG.csv','r');
 
-C = textscan(fid,'%d%c%d%c%d%c%s','Headerlines',1);
-
+fid = fopen('./data/edgeG.csv');
+C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 s = C{1};
 t = C{3};
-w = C{5};
+w = double(C{5});
 clear C;
 
 fide = fopen('./data/edgeG_n.csv','w');
-for i = 1:size(s,1)
-   fprintf(fide,'%d,%d,%d,Undirected',s(i),t(i),w(i));
+for j = 1:size(s,1)
+   fprintf(fide,'%d,%d,%d,Undirected',s(j),t(j),w(j));
     
     
 end
 
-c = de2bi(i,num_nodes)';
+c = de2bi(i,num_nodes)'
 %[s,t,w] = part_edges(s,t,w,c);
 
 [s0,t0,w0,~]   = part_edgesG(s,t,w,c,0);
@@ -32,8 +31,8 @@ adj1     = create_adj(s1,t1,w1,sum(c==1));
 lap0     = create_lap(adj0);
 lap1     = create_lap(adj1);
 
-eig0     = get_2eig(lap0);
-eig1     = get_2eig(lap1);
+eig0     = get_2eig(lap0)
+eig1     = get_2eig(lap1)
 
 subplot(1,2,1)
  G = graph(adj0);
@@ -58,12 +57,12 @@ size(a)
 
 fprintf(fidv,'Id\tLabel\tClass\n');
 
-for i = 1:num_nodes
-    fprintf(fidv,'%d\t%d\t%d\n',i-1,i-1,c(i));
+for j = 1:num_nodes
+    fprintf(fidv,'%d\t%d\t%d\n',j-1,j-1,c(j));
 end
     
 
-system('gephi');
+%system('gephi');
     
 end
 

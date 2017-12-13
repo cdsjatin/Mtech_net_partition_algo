@@ -24,18 +24,18 @@ close all;
 
 clear all; 
 
-fid = fopen('data/edgeG.csv');
+fid = fopen('./data/edgeG.csv');
 C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 s = C{1};
 t = C{3};
-w = C{5};
+w = double(C{5});
 clear C;
 fclose(fid);
 
-N = 25
+num_nodes = 25
 
 % 1
-adj  = create_adj(s,t,w,N);
+adj  = create_adj(s,t,w,num_nodes);
 L = create_lap(adj);
 [V,~] = eig(L);
 v = V(:,2);
@@ -48,7 +48,10 @@ id = (0:size(v,1)-1)';
 
 grp = v > median(v);
 
+
 A = [id';grp'];
 fprintf(fid,'%5g\t%5g\n', A);
+
+bi2de(grp')
 
 fclose(fid);
