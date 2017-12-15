@@ -3,12 +3,12 @@
 % limit of weights [lw,hw]
 % Starting index of nodes.
 
-num_nodes = 25;
+num_nodes = 100;
 lw = 1;
-hw = 20;
+hw = 10;
 idx = 0;
 
-fid = fopen('./data/edgeG.csv','w');
+fid = fopen('../data/edge100.csv','w');
 fspec = '%d,%d,%d\n';
 fprintf(fid,'Source,Target,Weight\n');
 

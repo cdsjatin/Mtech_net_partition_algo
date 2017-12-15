@@ -49,10 +49,11 @@ J = str2double(x{3});
 %}
 idx_a = -1
 
-num_nodes = 25;
-d_factor = 2;
+NUM_NODES = 25;
+DIV_FACTOR = 2;
+FILENAME = '../data/edgeG.csv'
 
-fid = fopen('./data/edgeG.csv');
+fid = fopen(FILENAME);
 C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 s = C{1};
 t = C{3};
@@ -60,9 +61,9 @@ w = double(C{5});
 clear C;
 
 % Generating Value for threshold using Eign value of Complete Graph
-adj = create_adj(s,t,w,num_nodes);
+adj = create_adj(s,t,w,NUM_NODES);
 lap = create_lap(adj);
-J = max(get_2eig(lap))/d_factor
+J = max(get_2eig(lap))/DIV_FACTOR
 max_iter = 12
 
 degree_w = get_degreeWeight(adj);
@@ -70,9 +71,9 @@ jj = 0;
 
 while(jj < 10)
     
-[c,c_no] = random_cutset(num_nodes);
+[c,c_no] = random_cutset(NUM_NODES);
 jj = jj + 1 ;
-not_c = zeros(num_nodes,1);
+not_c = zeros(NUM_NODES,1);
 clear eigA eigB
 figure(1);
 
@@ -92,11 +93,11 @@ for i = 1: max_iter
     eig0     = get_2eig(lap0);
     eig1     = get_2eig(lap1);
     
-    if i == 1
-       eig0
-       eig1
+    %if i == 1
+     %  eig0
+     %  eig1
         
-    end
+    %end
     
     %if(eig0 < J && eig1 < J)
     %    jj
@@ -124,7 +125,6 @@ for i = 1: max_iter
         
         
     end
- 
     
     if(eig0 < J || eig1 < J)
             
@@ -154,7 +154,7 @@ for i = 1: max_iter
                 
             end
             
-        c_no = de2bi(c');
+        c_no = bi2de(c');
             
     end
     
@@ -174,18 +174,16 @@ for i = 1: max_iter
     title(X);
     
     %pause(0.5)
-    waiting = waitforbuttonpress;
+    %waiting = waitforbuttonpress;
     
-    if waiting == 0
-    disp('Button click')
-    else
-    disp('Key press')
-    end
+   % if waiting == 0
+   % disp('Button click')
+   % else
+   % disp('Key press')
+   % end
     
 end
 
-    max(eigA)
-    max(eigB)
-
-    
 end
+
+c_no;

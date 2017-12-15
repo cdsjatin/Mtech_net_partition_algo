@@ -26,6 +26,7 @@ function [sn,tn,wn,count] = part_edgesG(s,t,w,c,gnum)
     % Generate new list 
     % that is if(group number is 0) then new source list starts 
     % from vertex 0;
+    
     count = 1;
     m = size(s,1);
     for i = 1:m
@@ -36,5 +37,8 @@ function [sn,tn,wn,count] = part_edgesG(s,t,w,c,gnum)
             count = count + 1;
         end
     end
+    
+    
+    
     
 end

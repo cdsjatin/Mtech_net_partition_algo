@@ -24,7 +24,10 @@ close all;
 
 clear all; 
 
-fid = fopen('./data/edgeG.csv');
+NUM_NODES = 25
+FILENAME = '../data/edgeG.csv'
+
+fid = fopen(FILENAME);
 C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 s = C{1};
 t = C{3};
@@ -32,10 +35,10 @@ w = double(C{5});
 clear C;
 fclose(fid);
 
-num_nodes = 25
+
 
 % 1
-adj  = create_adj(s,t,w,num_nodes);
+adj  = create_adj(s,t,w,NUM_NODES);
 L = create_lap(adj);
 [V,~] = eig(L);
 v = V(:,2);
@@ -53,5 +56,8 @@ A = [id';grp'];
 fprintf(fid,'%5g\t%5g\n', A);
 
 bi2de(grp')
+
+graph_plot(bi2de(grp'))
+        
 
 fclose(fid);

@@ -4,7 +4,7 @@
 function graph_plot(i)
 
 num_nodes = 25;
-fid = fopen('data/edgeG.csv','r');
+fid = fopen('../data/edgeG.csv','r');
 
 C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 
@@ -14,6 +14,7 @@ w = C{5};
 clear C;
 
 c = de2bi(i,num_nodes)';
+list = 0:num_nodes;
 %[s,t,w] = part_edges(s,t,w,c);
 
 [s0,t0,w0,cnt0]   = part_edgesG(s,t,w,c,0);
@@ -29,17 +30,49 @@ eig0     = get_2eig(lap0);
 eig1     = get_2eig(lap1);
 
 subplot(1,2,1)
+count0 = 1; count1 = 1;
+
+labels1 = zeros(sum(c==1),1);
+labels0 = zeros(sum(c==0),1);
+
+for j= 1:size(c)
+   if(c(j) == 0)
+       labels0(count0) = j-1;
+       count0 = count0 + 1;
+   else
+       labels1(count1) = j-1;
+       count1 = count1 + 1;
+   end
+end
+labels0
+labels1
+
  G = graph(adj0);
-    plot(G,'b','Layout','subspace','EdgeLabel',G.Edges.Weight);
-   X = sprintf('Eigen Value: %0.2f',eig0);
+   h = plot(G,'b','Layout','subspace','EdgeLabel',G.Edges.Weight,...
+       'LineWidth',2,'NodeLabel',labels0,'Markersize',6,'NodeColor','k');
+   
+   X = sprintf('Fiedler Value: %0.2f',eig0);
     title(X);
+    axis off;
     
     subplot(1,2,2)
     G = graph(adj1);
-    plot(G,'r','Layout','subspace','EdgeLabel',G.Edges.Weight);
+    plot(G,'r','Layout','subspace','EdgeLabel',G.Edges.Weight,...
+        'LineWidth',2,'NodeLabel',labels1,'Markersize',6,'NodeColor','k');
     
     
-    X = sprintf('Eigen Value: %0.2f',eig1);
+    X = sprintf('Fiedler Value: %0.2f',eig1);
     title(X);
+    axis off;
+    
+    if(i == 0)
+       figure
+        G = graph(adj0);
+       plot(G,'b','Layout','force','EdgeLabel',G.Edges.Weight,...
+       'LineWidth',0.9,'NodeLabel',labels0,'Markersize',6,'NodeColor','k');
+        X = sprintf('Fiedler Value: %0.2f',eig0);
+        title(X);
+        axis off;
+    end
     
 end
