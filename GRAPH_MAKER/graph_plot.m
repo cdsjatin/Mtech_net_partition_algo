@@ -3,8 +3,12 @@
 
 function graph_plot(i)
 
+if ~exist('i','var')
+    i = 0;
+end
+
 num_nodes = 25;
-fid = fopen('../data/edgeG.csv','r');
+fid = fopen('../data/edgeG.csv');
 
 C = textscan(fid,'%d%c%d%c%d','Headerlines',1);
 
@@ -14,11 +18,11 @@ w = C{5};
 clear C;
 
 c = de2bi(i,num_nodes)';
-list = 0:num_nodes;
+%list = 0:num_nodes;
 %[s,t,w] = part_edges(s,t,w,c);
 
-[s0,t0,w0,cnt0]   = part_edgesG(s,t,w,c,0);
-[s1,t1,w1,cnt1]   = part_edgesG(s,t,w,c,1);
+[s0,t0,w0,~]   = part_edgesG(s,t,w,c,0);
+[s1,t1,w1,~]   = part_edgesG(s,t,w,c,1);
 
 adj0     = create_adj(s0,t0,w0,sum(c==0));
 adj1     = create_adj(s1,t1,w1,sum(c==1));
@@ -44,15 +48,14 @@ for j= 1:size(c)
        count1 = count1 + 1;
    end
 end
-labels0
-labels1
 
  G = graph(adj0);
-   h = plot(G,'b','Layout','subspace','EdgeLabel',G.Edges.Weight,...
+ plot(G,'b','Layout','subspace','EdgeLabel',G.Edges.Weight,...
        'LineWidth',2,'NodeLabel',labels0,'Markersize',6,'NodeColor','k');
    
    X = sprintf('Fiedler Value: %0.2f',eig0);
-    title(X);
+   title(X);
+   axis off;
     
     subplot(1,2,2)
     G = graph(adj1);
@@ -62,7 +65,7 @@ labels1
     
     X = sprintf('Fiedler Value: %0.2f',eig1);
     title(X);
-    
+    axis off;
     
     if(i == 0)
        figure
